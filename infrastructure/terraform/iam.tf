@@ -50,8 +50,8 @@ resource "aws_iam_role_policy" "extract_intake_lambda_policy" {
         Resource = "arn:aws:logs:us-east-1:253881689673:log-group:/aws/lambda/petops-ai-extract-intake:*"
       },
       {
-        Effect   = "Allow"
-        Action   = ["bedrock:InvokeModel"]
+        Effect = "Allow"
+        Action = ["bedrock:InvokeModel"]
         Resource = [
           "arn:aws:bedrock:us-east-1:253881689673:inference-profile/us.anthropic.claude-haiku-4-5-20251001-v1:0",
           "arn:aws:bedrock:*::foundation-model/anthropic.claude-haiku-4-5-20251001-v1:0"

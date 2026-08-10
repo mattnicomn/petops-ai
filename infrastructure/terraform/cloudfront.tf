@@ -63,7 +63,7 @@ resource "aws_cloudfront_distribution" "frontend" {
     target_origin_id = "api-gateway"
 
     # Disable caching for API responses — dynamic content must not be served stale
-    cache_policy_id          = "4135ea2d-6df8-44a3-9df3-4b5a84be39ad" # CachingDisabled
+    cache_policy_id = "4135ea2d-6df8-44a3-9df3-4b5a84be39ad" # CachingDisabled
     # AllViewerExceptHostHeader: forwards all viewer headers (including Origin,
     # Access-Control-Request-Method, etc.) EXCEPT Host — which must remain as the
     # API Gateway origin hostname for routing to work correctly.

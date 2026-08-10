@@ -79,7 +79,7 @@ This project demonstrates authentic specification-driven development using [Kiro
 
 ### Meaningful Kiro Contributions
 
-**Safety boundary correction**: During planning review, Kiro's requirement detailing identified that "medication interaction detection" represented a clinical claim beyond the product's operational scope. The requirement was corrected to focus on information gaps (missing dosage, ambiguous schedule) rather than veterinary safety assessments.
+**Safety boundary correction**: During an independent architecture review, the proposed "medication interaction detection" requirement was challenged as a clinical claim beyond the product's operational scope. Kiro then incorporated that feedback systematically — updating requirements, safety boundaries, ADRs, steering, and the implementation plan before coding began. This demonstrates Kiro supporting iterative, review-driven specification refinement.
 
 **Bedrock Structured Outputs debugging**: Kiro diagnosed that the Lambda runtime's built-in AWS SDK lacked `outputConfig.textFormat` serialization support. The fix — bundling SDK v3.1106.0 in the deployment package — resolved the issue and proved Structured Outputs work correctly with cross-region inference profiles.
 

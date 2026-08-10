@@ -21,10 +21,10 @@ resource "aws_dynamodb_table" "care_plans" {
   }
 
   global_secondary_index {
-    name            = "createdAt-index"
-    hash_key        = "status"
-    range_key       = "createdAt"
-    projection_type = "INCLUDE"
+    name               = "createdAt-index"
+    hash_key           = "status"
+    range_key          = "createdAt"
+    projection_type    = "INCLUDE"
     non_key_attributes = ["petName", "serviceType"]
   }
 

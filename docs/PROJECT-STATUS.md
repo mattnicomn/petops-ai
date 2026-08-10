@@ -1,7 +1,7 @@
 # PetOps AI — Project Status
 
 ## Current Phase
-**Judge Experience VALIDATED** — Full end-to-end workflow deployed and functional at https://petops-ai.usmissionhero.com/
+**Engineering Quality / Verification COMPLETE** — 51 automated tests passing, SECURITY.md complete, CI workflow added, documentation mature.
 
 ## Completed
 - [x] Planning baseline (requirements, design, tasks, ADRs, steering)
@@ -45,13 +45,9 @@
 - Bedrock: Claude Haiku 4.5 via US inference profile with Structured Outputs
 
 ## Remaining Work
-- [ ] SECURITY.md
-- [ ] Final README updates (setup, deployment, testing instructions)
-- [ ] Property-based tests (fast-check)
-- [ ] Unit tests for core logic
-- [ ] Accessibility audit (axe-core)
-- [ ] Minor UX polish (responsive edge cases)
 - [ ] Demo video preparation
+- [ ] Fresh-clone validation screenshot/record
+- [ ] Final submission checklist
 
 ## Key Dates
 | Date | Milestone |
