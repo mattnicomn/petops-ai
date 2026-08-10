@@ -5,9 +5,7 @@ resource "aws_apigatewayv2_api" "main" {
   protocol_type = "HTTP"
 
   cors_configuration {
-    # Will be restricted to custom domain in Vertical Slice B
-    # For Slice A, allow the CloudFront default domain (set post-deploy)
-    allow_origins = ["*"]
+    allow_origins = ["https://petops-ai.usmissionhero.com"]
     allow_methods = ["GET", "POST", "OPTIONS"]
     allow_headers = ["Content-Type", "X-Correlation-Id"]
     max_age       = 3600
