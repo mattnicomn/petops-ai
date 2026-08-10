@@ -189,9 +189,19 @@ async function invokeConverse(text: string, correlationId: string): Promise<unkn
     ],
     system: [{ text: SYSTEM_PROMPT }],
     inferenceConfig: { maxTokens: 2048, temperature: 0 },
-    // NOTE: outputConfig.textFormat (Structured Outputs) is not supported through
-    // cross-region inference profiles. The model returns JSON via prompt instruction
-    // and we validate with Zod locally (defense in depth).
+    // PRIMARY PATH: Bedrock Structured Outputs constrains model to valid JSON schema
+    outputConfig: {
+      textFormat: {
+        type: 'json_schema',
+        structure: {
+          jsonSchema: {
+            name: 'petops_ai_extraction',
+            description: 'Structured pet-care intake extraction result',
+            schema: EXTRACTION_JSON_SCHEMA,
+          },
+        },
+      },
+    },
   });
 
   const response = await client.send(command);
@@ -218,16 +228,16 @@ async function invokeConverse(text: string, correlationId: string): Promise<unkn
 
   const rawText = textBlock.text.trim();
 
-  // With cross-region inference profiles, Structured Outputs (outputConfig) is silently ignored.
-  // The model returns valid JSON but may wrap it in markdown code fences.
-  // Parse defensively: strip fences if present, then JSON.parse.
-  const jsonText = stripMarkdownFences(rawText);
+  // PRIMARY PATH: With Structured Outputs enabled, response is clean JSON.
+  // FALLBACK: If Structured Outputs is silently bypassed (e.g., first-time schema compilation),
+  // the model may wrap JSON in markdown fences. Handle defensively.
+  const jsonText = rawText.startsWith('{') ? rawText : stripMarkdownFences(rawText);
 
   console.log(JSON.stringify({
     correlationId,
     event: 'response_text_start',
     firstChar: rawText[0],
-    hadFences: rawText !== jsonText,
+    usedStructuredOutput: rawText.startsWith('{'),
     length: rawText.length,
   }));
 
@@ -235,8 +245,8 @@ async function invokeConverse(text: string, correlationId: string): Promise<unkn
   return parsed;
 }
 
+/** Fallback: strip markdown code fences if Structured Outputs was bypassed */
 function stripMarkdownFences(text: string): string {
-  // If response starts with ``` (markdown fence), strip it
   if (text.startsWith('```')) {
     return text
       .replace(/^```(?:json)?\s*\n?/, '')
