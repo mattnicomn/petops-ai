@@ -4,6 +4,9 @@ AI-powered operations assistant for pet-care businesses.
 
 **Live Demo**: https://petops-ai.usmissionhero.com/
 
+**🎬 Hackathon Demo Video**: [Watch the judging demo](https://www.youtube.com/watch?v=C4zRCx_ZyMw)
+**📹 Extended Technical Walkthrough**: [Watch the extended demo](https://www.youtube.com/watch?v=rcYxXv5sq98)
+
 ## What It Does
 
 PetOps AI transforms unstructured customer requests (phone calls, texts, emails, free-form notes) into structured, validated care plans through responsible AI with human-in-the-loop review.

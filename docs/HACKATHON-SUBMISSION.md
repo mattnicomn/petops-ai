@@ -10,7 +10,8 @@
 - **Live Application**: https://petops-ai.usmissionhero.com/
 - **Demo Page**: https://petops-ai.usmissionhero.com/demo
 - **GitHub Repository**: https://github.com/mattnicomn/petops-ai
-- **Demo Video**: [placeholder — URL to be added after recording]
+- **Demo Video**: https://www.youtube.com/watch?v=C4zRCx_ZyMw
+- **Extended Technical Walkthrough**: https://www.youtube.com/watch?v=rcYxXv5sq98
 
 ## Quick Judge Walkthrough
 1. Visit https://petops-ai.usmissionhero.com/
@@ -70,4 +71,5 @@ Kiro was used for the complete lifecycle: steering → requirements → design �
 Commit: `c4b6167` — all product capabilities frozen. Only presentation polish after this point.
 
 ## Team
-USMissionHero — Matt
+Matthew Nico — Solo entrant
+Organization: USMissionHero

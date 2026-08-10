@@ -56,6 +56,18 @@ export function DemoShowcase() {
         <strong>Two Intake Modes. One Trusted Operational Pipeline.</strong><br />
         Both paths → Zod validation → attention flags → care plan assembly → human review → DynamoDB.
       </p>
+
+      <div className="demo-video-section">
+        <h3>📽️ See It In Action</h3>
+        <div className="demo-video-links">
+          <a href="https://www.youtube.com/watch?v=C4zRCx_ZyMw" target="_blank" rel="noopener noreferrer" className="btn btn-primary">
+            🎬 Watch the Hackathon Demo
+          </a>
+          <a href="https://www.youtube.com/watch?v=rcYxXv5sq98" target="_blank" rel="noopener noreferrer" className="btn btn-secondary">
+            📹 Extended Technical Walkthrough
+          </a>
+        </div>
+      </div>
     </main>
   );
 }

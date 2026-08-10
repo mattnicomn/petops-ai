@@ -229,3 +229,8 @@ body {
 /* Custom text input for "Other" options */
 .custom-text-input { width: 100%; margin-top: 0.5rem; padding: 0.5rem 0.75rem; border: 1px solid var(--color-border); border-radius: var(--radius); font-size: 0.85rem; }
 .custom-text-input:focus { outline: none; border-color: var(--color-primary); box-shadow: 0 0 0 2px rgba(37,99,235,0.1); }
+
+/* Demo Video Section */
+.demo-video-section { text-align: center; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--color-border); }
+.demo-video-section h3 { font-size: 1rem; margin-bottom: 0.75rem; }
+.demo-video-links { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
