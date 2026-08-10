@@ -2,130 +2,184 @@
 
 AI-powered operations assistant for pet-care businesses.
 
+**Live Demo**: https://petops-ai.usmissionhero.com/
+
 ## What It Does
 
 PetOps AI transforms unstructured customer requests (phone calls, texts, emails, free-form notes) into structured, validated care plans through responsible AI with human-in-the-loop review.
 
-**Flagship workflow:**
-Customer request → AI extraction → deterministic validation → risk detection → explainable findings → proposed care plan → human review → operational record
+**The problem**: Pet-care staff receive critical instructions in unstructured forms. Important details — medications, behavioral concerns, vaccination timing — get overlooked or misinterpreted.
 
-## Problem
+**The solution**: AI extracts structured information, deterministic rules validate and flag operational concerns, and staff review/approve before anything becomes operational.
 
-Pet-care businesses receive critical customer instructions in unstructured forms. Employees must manually interpret this information — pet names, boarding dates, medications, behavioral concerns, allergies — and convert it into operational plans. Important details get overlooked, interpreted inconsistently, or buried in free-form language.
+## Quick Judge Walkthrough
 
-## Who It Serves
+1. Visit https://petops-ai.usmissionhero.com/
+2. Click **"Try the Demo"**
+3. Select the **Bentley** scenario (boarding + medication + behavioral)
+4. Click **"Analyze Request"** (wait ~3 seconds for AI)
+5. Review the proposed care plan with attention flags
+6. Click **"Approve Care Plan"**
+7. Visit **History** to see the stored result
 
-- Pet boarding facilities
-- Dog daycare businesses
-- Groomers and kennels
-- Pet sitters
-- Veterinary boarding operations
-
-## Technology Stack
-
-| Layer | Technology |
-|-------|-----------|
-| Frontend | React + Vite (TypeScript) |
-| API | Amazon API Gateway HTTP API |
-| Compute | AWS Lambda (Node.js) |
-| Data | Amazon DynamoDB (on-demand) |
-| AI | Amazon Bedrock |
-| Hosting | Amazon S3 + CloudFront |
-| IaC | Terraform |
+No account creation, setup, or credentials required.
 
 ## Architecture
 
-> Architecture diagram and detailed data flow will be added after technical design is complete.
+```
+Customer Text → API Gateway (throttled, CORS)
+    → Lambda (extract-intake)
+        → Bedrock Claude Haiku 4.5 (Structured Outputs)
+        → Local Zod Validation (defense in depth)
+    → Lambda (validate-and-flag)
+        → Deterministic Business Rules
+        → Operational Attention Detection
+        → Care Plan Assembly
+    → React Review Interface
+        → Human Approve/Reject
+    → Lambda (care-plan-crud)
+        → DynamoDB Persistence
+```
 
-### Key Design Decisions
+| Layer | Technology |
+|-------|-----------|
+| Frontend | React 19 + Vite + TypeScript |
+| API | Amazon API Gateway HTTP API |
+| Compute | AWS Lambda (Node.js 20) |
+| AI | Amazon Bedrock (Claude Haiku 4.5, Structured Outputs) |
+| Data | Amazon DynamoDB (on-demand) |
+| Hosting | Amazon S3 + CloudFront (private bucket, OAC) |
+| DNS/TLS | Route 53 + ACM |
+| IaC | Terraform |
+| Budget | $10/month with alerts |
 
-- [ADR-001: Serverless AWS Architecture](docs/decisions/001-serverless-aws-architecture.md)
-- [ADR-002: React + Vite Frontend](docs/decisions/002-react-vite-frontend.md)
-- [ADR-003: DynamoDB Data Store](docs/decisions/003-dynamodb-data-store.md)
-- [ADR-004: Bedrock AI Extraction](docs/decisions/004-bedrock-ai-extraction.md)
-- [ADR-005: Terraform IaC](docs/decisions/005-terraform-iac.md)
-- [ADR-006: No Auth for Demo](docs/decisions/006-no-auth-demo.md)
-- [ADR-007: AI Validation Boundary](docs/decisions/007-ai-validation-boundary.md)
+### AI Trust Pipeline
 
-## AI Safety & Human-in-the-Loop
+AI output is treated as **untrusted external input** even with Bedrock Structured Outputs enabled:
 
-PetOps AI demonstrates responsible AI principles:
+1. **Bedrock Structured Outputs** — constrains model to JSON schema at generation time
+2. **Local Zod validation** — defense in depth, rejects malformed output
+3. **Deterministic business rules** — date logic, required fields per service type
+4. **Operational attention detection** — medication gaps, vaccination timing, behavioral concerns
+5. **Human review** — staff always approve/reject before care plan becomes operational
 
-- AI output treated as **untrusted input** until validated deterministically
-- **Deterministic validation** layer between AI extraction and care plan generation
-- **Explainability**: clear reasoning for every flagged item
-- **Human review**: staff always approve/reject before care plan becomes operational
-- **No fabricated confidence**: uncertainty is binary (confident/uncertain) based on model behavior
-- System does NOT provide veterinary diagnosis or medical advice
+### Product Safety Boundary
 
-## Demo Experience
+PetOps AI organizes and flags owner-provided care instructions. It does **NOT** provide veterinary diagnosis, medication-compatibility advice, or medical safety assessments. All attention flags identify operational information gaps or conflicts — never clinical determinations.
 
-> *Planned: Demo URL at https://petops-ai.usmissionhero.com/*
+## How Kiro Was Used
 
-Pre-built scenarios (fictional data only):
-- **Bentley** — Boarding + Medication (Apoquel) + Behavioral concern (anxiety around large dogs)
-- **Luna** — Grooming + Allergy sensitivity
-- **Cooper** — Boarding + Vaccination timing concern
-- **Blank Intake** — Free-form text entry
+This project demonstrates authentic specification-driven development using [Kiro](https://kiro.dev) as the primary AI engineering environment.
 
-No account creation required for the demo.
+### Specification-First Development
+- **Project steering** ([`.kiro/steering/`](.kiro/steering/)): Product vision, coding standards, Terraform conventions, AI safety principles established before any implementation
+- **Formal requirements** ([`.kiro/specs/petops-ai-platform/requirements.md`](.kiro/specs/petops-ai-platform/requirements.md)): 18 requirements with EARS-format acceptance criteria, reviewed and corrected through iterative planning
+- **Technical design** ([`.kiro/specs/petops-ai-platform/design.md`](.kiro/specs/petops-ai-platform/design.md)): Full architecture, API contracts, data models, correctness properties
+- **Implementation tasks** ([`.kiro/specs/petops-ai-platform/tasks.md`](.kiro/specs/petops-ai-platform/tasks.md)): Dependency-ordered task plan with validation commands
+
+### Meaningful Kiro Contributions
+
+**Safety boundary correction**: During planning review, Kiro's requirement detailing identified that "medication interaction detection" represented a clinical claim beyond the product's operational scope. The requirement was corrected to focus on information gaps (missing dosage, ambiguous schedule) rather than veterinary safety assessments.
+
+**Bedrock Structured Outputs debugging**: Kiro diagnosed that the Lambda runtime's built-in AWS SDK lacked `outputConfig.textFormat` serialization support. The fix — bundling SDK v3.1106.0 in the deployment package — resolved the issue and proved Structured Outputs work correctly with cross-region inference profiles.
+
+**CloudFront API 404 fix**: Kiro identified that CloudFront's global custom error response (404 → index.html) was intercepting API 404 responses intended for the frontend. The fix — removing the 404 rewrite and relying on 403-only for S3/OAC SPA routing — resolved the behavioral conflict.
+
+**Architecture decisions** ([`docs/decisions/`](docs/decisions/)): 7 ADRs documenting serverless choice, DynamoDB, Bedrock model selection, Terraform, authentication-free demo, and AI validation boundary.
 
 ## Local Development
 
-> *Setup instructions will be added when implementation begins.*
-
-### Prerequisites (planned)
+### Prerequisites
 - Node.js 20+
-- AWS CLI configured
-- Terraform 1.5+
+- AWS CLI configured (profile with Bedrock + DynamoDB access)
+- Terraform 1.10+
+
+### Install
+```bash
+git clone https://github.com/mattnicomn/petops-ai.git
+cd petops-ai
+npm install
+```
+
+### Build
+```bash
+# Backend Lambda handlers
+cd packages/backend && node build.mjs
+
+# Frontend
+cd packages/frontend && npx vite build
+```
+
+### Test
+```bash
+# All automated tests (42 deterministic tests)
+npx vitest --run
+
+# TypeScript check
+cd packages/backend && npx tsc --noEmit
+cd packages/frontend && npx tsc --noEmit
+```
+
+### Local Frontend Dev
+```bash
+cd packages/frontend
+npx vite  # serves on localhost:5173 with /api proxy
+```
+
+## AWS Deployment
+
+### Account Guard
+Terraform is configured with `allowed_account_ids = ["253881689673"]` and an explicit caller-identity precondition. Deployment fails if the active AWS identity does not belong to the approved account.
+
+### Terraform
+```bash
+cd infrastructure/terraform
+terraform init
+terraform validate
+terraform plan -var="budget_alert_email=your@email.com"
+terraform apply -var="budget_alert_email=your@email.com"
+```
+
+### Frontend Deploy
+```bash
+cd packages/frontend && npx vite build
+aws s3 sync dist/ s3://petops-ai-frontend-253881689673/ --delete
+aws cloudfront create-invalidation --distribution-id E368MC43CWVODO --paths "/*"
+```
 
 ## Testing
 
-> *Test commands will be added when test infrastructure is established.*
+- **42 deterministic unit tests** covering business rules, input validation, attention detection, and care plan assembly
+- Tests verify the operational safety boundary (no clinical claims, no medication interactions)
+- Tests verify exhaustive error collection, date validation, and uncertainty handling
+- Live Bedrock tests are separated and not required for normal development
 
-### Strategy
-- Property-based testing for validation logic
-- Unit tests for schema conformance
-- Integration tests for API endpoints
-- Failure-path tests (missing data, invalid AI output, service failures)
-- Accessibility testing (WCAG 2.1 AA)
+## Cost
 
-## Deployment
+- Serverless architecture: zero cost when idle
+- $10/month AWS Budget with alerts at 50%, 80%, 100%
+- Claude Haiku 4.5: ~$0.50/month at demo load (~50 extractions)
+- DynamoDB on-demand: ~$0.01/month
+- Total estimated: ~$1-2/month under demonstration load
 
-> *Deployment instructions will be added when Terraform configuration is complete.*
+## Security
 
-## How Kiro Is Being Used
-
-This project uses [Kiro](https://kiro.dev) as the primary AI software engineering environment. Kiro is being used authentically throughout the development lifecycle:
-
-### Completed (Phase: Foundation)
-- **Project Steering**: Established development principles, technical direction, security guardrails, and cost constraints (`.kiro/steering/`)
-- **Formal Specification**: Created detailed requirements using Kiro's spec workflow — 17 requirements with EARS-format acceptance criteria (`.kiro/specs/petops-ai-platform/requirements.md`)
-- **Requirements Detailing**: Automated refinement of each requirement for testability and precision
-
-### Planned
-- Technical design document via Kiro spec workflow
-- Implementation task decomposition
-- Agentic development for feature implementation
-- Testing workflow assistance
-- Hooks for automated validation
-- Documentation generation
+See [SECURITY.md](SECURITY.md) for the full security model including trust boundaries, IAM scope, and known limitations.
 
 ## Known Limitations
 
-> *Will be documented as implementation progresses.*
-
-## Cost Considerations
-
-- Target: <$15/month AWS spend under demonstration load
-- All serverless (zero cost when idle)
-- Efficient Bedrock model selection (Haiku for cost-effective extraction)
-- On-demand DynamoDB (no provisioned capacity)
+- No authentication (hackathon demo — fictional data only)
+- Single-pet extraction per request (multi-pet is post-MVP)
+- Dates extracted as relative ("Friday through Monday") may need year context
+- No skip-to-content accessibility link
+- No dark mode
+- No PDF/print export
+- No offline capability
 
 ## License
 
 MIT
 
-## Hackathon
+---
 
-Built for the 2026 Ready, Spec, Ship Hackathon sponsored by Kiro.
+Built for the **2026 Ready, Spec, Ship Hackathon** sponsored by Kiro.
