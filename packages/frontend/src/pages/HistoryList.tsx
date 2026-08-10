@@ -67,7 +67,7 @@ export function HistoryList() {
       <h2>Care Plan History</h2>
       <div className="history-list">
         {items.map((item) => (
-          <div key={item.id} className="history-item">
+          <Link key={item.id} to={`/app/plans/${item.id}`} className="history-item" style={{ textDecoration: 'none', color: 'inherit' }}>
             <div className="history-item-info">
               <strong>{item.petName}</strong>
               <span className="history-service">{item.serviceType}</span>
@@ -76,7 +76,7 @@ export function HistoryList() {
               </span>
             </div>
             <span className={`status-badge status-${item.status}`}>{item.status}</span>
-          </div>
+          </Link>
         ))}
       </div>
     </main>

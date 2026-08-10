@@ -73,15 +73,9 @@ resource "aws_cloudfront_distribution" "frontend" {
     compress               = true
   }
 
-  # SPA fallback: serve index.html for 403/404 (client-side routing)
+  # SPA fallback: serve index.html for 403 (S3 returns 403 for missing objects via OAC)
   custom_error_response {
     error_code         = 403
-    response_code      = 200
-    response_page_path = "/index.html"
-  }
-
-  custom_error_response {
-    error_code         = 404
     response_code      = 200
     response_page_path = "/index.html"
   }
