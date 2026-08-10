@@ -1,7 +1,7 @@
 # PetOps AI — Project Status
 
 ## Current Phase
-**Vertical Slice A COMPLETE** — Infrastructure deployed, frontend live, health API operational.
+**Vertical Slice B COMPLETE + Shared Schemas + Deterministic Logic** — Custom domain live, backend logic implemented, ready for Bedrock integration.
 
 ## Completed
 - [x] Repository initialized (main branch)
@@ -31,21 +31,26 @@
 - [x] End-to-end validation: CloudFront → frontend → /api/health → Lambda → response
 
 ## Deployed Infrastructure
-- **CloudFront**: https://d37rsmmhkt8eg6.cloudfront.net/
+- **Custom Domain**: https://petops-ai.usmissionhero.com/ ✓
+- **CloudFront**: d37rsmmhkt8eg6.cloudfront.net (also accessible)
 - **API Gateway**: https://sfvvqu6nkg.execute-api.us-east-1.amazonaws.com
-- **S3 Bucket**: petops-ai-frontend-253881689673
+- **S3 Bucket**: petops-ai-frontend-253881689673 (private, OAC)
 - **Distribution ID**: E368MC43CWVODO
 - **Lambda**: petops-ai-health
 - **Budget**: petops-ai-monthly ($10/month)
+- **ACM Cert**: arn:aws:acm:us-east-1:253881689673:certificate/5a457cf8-0fd3-4abc-917f-9d1e538cc1ae
+- **Route 53**: petops-ai.usmissionhero.com → CloudFront (A record alias)
 
 ## Pending Authorization
-- [ ] Vertical Slice B (ACM + Route 53 + custom domain)
+- [ ] Bedrock AI extraction Lambda (smoke test + full handler)
 
-## Next Steps (after Slice B authorization)
-1. ACM certificate for petops-ai.usmissionhero.com
-2. Route 53 DNS record → CloudFront
-3. CORS restriction to custom domain
-4. Then: shared schemas, deterministic backend logic, Bedrock integration
+## Next Steps (after authorization)
+1. Bedrock smoke test (one minimal paid inference to verify model access)
+2. Extract-intake Lambda handler (Bedrock Converse API + Structured Outputs)
+3. Validate-and-flag Lambda handler (orchestrates validation + detection + assembly)
+4. Care-plan-crud Lambda handler (DynamoDB persistence)
+5. Deploy all three Lambda functions
+6. Frontend: full intake → review → approve workflow
 
 ## Key Dates
 | Date | Milestone |
@@ -65,8 +70,9 @@
 - Region: us-east-1
 - Profile: default
 - Principal: arn:aws:iam::253881689673:user/Terraform_User
-- Live URL: https://d37rsmmhkt8eg6.cloudfront.net/
-- Custom domain: petops-ai.usmissionhero.com (pending Slice B)
+- Live URL: https://petops-ai.usmissionhero.com/
+- CloudFront fallback: https://d37rsmmhkt8eg6.cloudfront.net/
+- Custom domain: petops-ai.usmissionhero.com ✓ (ACM + Route 53 deployed)
 - Bedrock Model: us.anthropic.claude-haiku-4-5-20251001-v1:0 (ACTIVE)
 
 ## Guardrails

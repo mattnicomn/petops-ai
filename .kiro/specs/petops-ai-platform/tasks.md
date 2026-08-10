@@ -10,8 +10,8 @@ This plan implements the PetOps AI platform as an early deployed vertical slice,
 
 ## Tasks
 
-- [ ] 1. Project Setup and Monorepo Structure
-  - [ ] 1.1 Initialize monorepo with package.json, TypeScript config, and tooling
+- [x] 1. Project Setup and Monorepo Structure
+  - [x] 1.1 Initialize monorepo with package.json, TypeScript config, and tooling
     - Create root `package.json` with npm workspaces: `packages/shared`, `packages/backend`, `packages/frontend`, `infrastructure/terraform`
     - Create root `tsconfig.base.json` with strict mode, ES2022 target, composite project references
     - Create workspace-level `tsconfig.json` files extending base
@@ -21,7 +21,7 @@ This plan implements the PetOps AI platform as an early deployed vertical slice,
     - _Requirements: 11.1, 11.3_
     - **Validation**: `npm install && npx tsc --noEmit`
 
-  - [ ] 1.2 Configure Vitest and fast-check testing infrastructure
+  - [x] 1.2 Configure Vitest and fast-check testing infrastructure
     - Create `vitest.config.ts` at root with workspace configuration
     - Create `packages/shared/vitest.config.ts`, `packages/backend/vitest.config.ts`, `packages/frontend/vitest.config.ts`
     - Install `@vitest/coverage-v8` for coverage reporting
@@ -30,8 +30,8 @@ This plan implements the PetOps AI platform as an early deployed vertical slice,
     - _Requirements: 3.4, 3.5_
     - **Validation**: `npm run test -- --run`
 
-- [ ] 2. Terraform Core Infrastructure — Vertical Slice A (Infrastructure Proof)
-  - [ ] 2.1 Configure Terraform backend and provider with account safeguard
+- [x] 2. Terraform Core Infrastructure — Vertical Slice A (Infrastructure Proof)
+  - [x] 2.1 Configure Terraform backend and provider with account safeguard
     - Create `infrastructure/terraform/main.tf` with AWS provider (us-east-1, default_tags, allowed_account_ids=["253881689673"])
     - Create `infrastructure/terraform/backend.tf` with S3 state backend (key: `petops-ai/terraform.tfstate`)
     - Add `aws_caller_identity` data source and `null_resource` precondition for account 253881689673 (defense in depth with allowed_account_ids)
@@ -41,7 +41,7 @@ This plan implements the PetOps AI platform as an early deployed vertical slice,
     - _Requirements: 11.1, 11.5_
     - **Validation**: `terraform init && terraform validate`
 
-  - [ ] 2.2 Create S3 bucket and CloudFront distribution for SPA hosting
+  - [x] 2.2 Create S3 bucket and CloudFront distribution for SPA hosting
     - Create `infrastructure/terraform/s3.tf`: bucket `petops-ai-frontend-253881689673` with website config disabled (OAC access)
     - Create `infrastructure/terraform/cloudfront.tf`: distribution with OAC, SPA error pages (403/404 → /index.html), HTTPS only
     - Configure CloudFront origin for S3 bucket with OAC
@@ -51,7 +51,7 @@ This plan implements the PetOps AI platform as an early deployed vertical slice,
     - _Requirements: 10.5, 9.1_
     - **Validation**: `terraform validate && terraform plan`
 
-  - [ ] 2.3 Create API Gateway HTTP API with CORS and throttling
+  - [x] 2.3 Create API Gateway HTTP API with CORS and throttling
     - Create `infrastructure/terraform/api-gateway.tf`: HTTP API `petops-ai-api` with `$default` stage
     - Configure CORS: allow origin for CloudFront default domain initially (updated in Slice B)
     - Configure default route throttling: burst=10, rate=5
@@ -68,12 +68,12 @@ This plan implements the PetOps AI platform as an early deployed vertical slice,
     - _Requirements: 10.3, 8.2, 8.3_
     - **Validation**: `terraform validate && terraform plan`
 
-  - [ ] 2.5 Create Lambda functions with IAM roles (stub handlers)
+  - [x] 2.5 Create Lambda functions with IAM roles (stub handlers)
     - Create `infrastructure/terraform/lambda.tf`: three Lambda functions + one health check
-      - `petops-ai-health` (5s timeout, 128MB, Node.js 20) — GET /api/health
-      - `petops-ai-extract-intake` (30s timeout, 256MB, Node.js 20)
-      - `petops-ai-validate-and-flag` (10s timeout, 256MB, Node.js 20)
-      - `petops-ai-care-plan-crud` (10s timeout, 256MB, Node.js 20)
+      - `petops-ai-health` (5s timeout, 128MB, Node.js 20) — GET /api/health ✓
+      - `petops-ai-extract-intake` (30s timeout, 256MB, Node.js 20) — deferred to later slice
+      - `petops-ai-validate-and-flag` (10s timeout, 256MB, Node.js 20) — deferred to later slice
+      - `petops-ai-care-plan-crud` (10s timeout, 256MB, Node.js 20) — deferred to later slice
     - Create `infrastructure/terraform/iam.tf`: IAM roles with least-privilege
       - health: logs only
       - extract-intake: bedrock:InvokeModel, logs:CreateLogGroup/Stream/PutLogEvents
@@ -84,7 +84,7 @@ This plan implements the PetOps AI platform as an early deployed vertical slice,
     - _Requirements: 10.1, 13.2, 13.9_
     - **Validation**: `terraform validate && terraform plan`
 
-  - [ ] 2.6 Create CloudWatch log groups and AWS Budget
+  - [x] 2.6 Create CloudWatch log groups and AWS Budget
     - Create `infrastructure/terraform/cloudwatch.tf`: log groups for each Lambda with 14-day retention
     - Create `infrastructure/terraform/budget.tf`: AWS Budget `petops-ai-monthly`, $10 limit, MONTHLY
       - Cost filter by tag `Project=PetOpsAI`
@@ -92,7 +92,7 @@ This plan implements the PetOps AI platform as an early deployed vertical slice,
     - _Requirements: 10.6, 17.1_
     - **Validation**: `terraform validate && terraform plan`
 
-  - [ ] 2.7 Deploy Vertical Slice A and verify via CloudFront default hostname
+  - [x] 2.7 Deploy Vertical Slice A and verify via CloudFront default hostname
     - Run `terraform apply` to deploy all Slice A infrastructure
     - Upload a minimal `index.html` ("PetOps AI - Coming Soon") to S3
     - Verify CloudFront default hostname (*.cloudfront.net) serves the HTML page
@@ -101,8 +101,8 @@ This plan implements the PetOps AI platform as an early deployed vertical slice,
     - _Requirements: 11.2_
     - **Validation**: `curl -s https://<cloudfront-domain>/ | grep "PetOps"` and `curl -s https://<cloudfront-domain>/api/health`
 
-- [ ] 3. Terraform — Vertical Slice B (Branded Demo Foundation)
-  - [ ] 3.1 Configure ACM certificate and Route 53 DNS for custom domain
+- [x] 3. Terraform — Vertical Slice B (Branded Demo Foundation)
+  - [x] 3.1 Configure ACM certificate and Route 53 DNS for custom domain
     - Create `infrastructure/terraform/acm.tf`: ACM certificate for `petops-ai.usmissionhero.com` with DNS validation
     - Create `infrastructure/terraform/dns.tf`: Route 53 validation records for ACM + A record (alias) for `petops-ai.usmissionhero.com` → CloudFront
     - Wire ACM certificate ARN into CloudFront viewer certificate config (alternate domain name)
@@ -110,7 +110,7 @@ This plan implements the PetOps AI platform as an early deployed vertical slice,
     - _Requirements: 10.5, 12.1_
     - **Validation**: `terraform validate && terraform plan`
 
-  - [ ] 3.2 Deploy Vertical Slice B and verify branded URL
+  - [x] 3.2 Deploy Vertical Slice B and verify branded URL
     - Run `terraform apply` to deploy DNS/ACM additions
     - Wait for ACM certificate validation (may take minutes)
     - Verify `https://petops-ai.usmissionhero.com/` serves the HTML page
@@ -120,11 +120,11 @@ This plan implements the PetOps AI platform as an early deployed vertical slice,
     - _Requirements: 12.1, 12.2, 12.3_
     - **Validation**: `curl -s https://petops-ai.usmissionhero.com/ | grep "PetOps"` and `curl -s https://petops-ai.usmissionhero.com/api/health`
 
-- [ ] 4. Checkpoint - Vertical slices deployed
-  - Ensure Terraform applies cleanly, live URL responds at both CloudFront default and custom domain, API returns mock data. Ask the user if questions arise.
+- [x] 4. Checkpoint - Vertical slices deployed
+  - Terraform applies cleanly, live URL responds at both CloudFront default and custom domain, API returns health data. ✓
 
-- [ ] 5. Shared Zod Schemas
-  - [ ] 4.1 Implement core data model schemas (ExtractionResult, PetInfo, ServiceRequest)
+- [x] 5. Shared Zod Schemas
+  - [x] 5.1 Implement core data model schemas (ExtractionResult, PetInfo, ServiceRequest)
     - Create `packages/shared/src/schemas/extraction.ts`
     - Define Zod schemas: `PetInfoSchema`, `ServiceRequestSchema`, `MedicationEntrySchema`, `VaccinationEntrySchema`, `ExtractionResultSchema`
     - Export TypeScript types inferred from Zod schemas (`z.infer<typeof ...>`)
@@ -132,7 +132,7 @@ This plan implements the PetOps AI platform as an early deployed vertical slice,
     - _Requirements: 2.6, 3.1, 3.6_
     - **Validation**: `npm run test -- --run packages/shared`
 
-  - [ ] 4.2 Implement validation and attention flag schemas
+  - [x] 4.2 Implement validation and attention flag schemas
     - Create `packages/shared/src/schemas/validation.ts`
     - Define: `ValidationErrorSchema`, `ValidationResultSchema`
     - Create `packages/shared/src/schemas/attention-flag.ts`
@@ -140,7 +140,7 @@ This plan implements the PetOps AI platform as an early deployed vertical slice,
     - _Requirements: 3.5, 4.5_
     - **Validation**: `npm run test -- --run packages/shared`
 
-  - [ ] 4.3 Implement care plan and API request/response schemas
+  - [x] 4.3 Implement care plan and API request/response schemas
     - Create `packages/shared/src/schemas/care-plan.ts`
     - Define: `ProposedCarePlanSchema`, `StoredCarePlanSchema`, `CarePlanSummarySchema`, `ApprovedCarePlanSchema`
     - Include `DailyScheduleSchema`, `ScheduleEntrySchema`, `MedicationScheduleEntrySchema`, `MissingFieldPlaceholderSchema`
@@ -159,8 +159,8 @@ This plan implements the PetOps AI platform as an early deployed vertical slice,
     - Generate arbitrary invalid objects → assert Zod parse fails with structured errors
     - Create custom `arbitraryExtractionResult()` generator
 
-- [ ] 5. Backend — Deterministic Validation Layer
-  - [ ] 5.1 Implement input validation (request body, text length, whitespace)
+- [x] 5. Backend — Deterministic Validation Layer
+  - [x] 5.1 Implement input validation (request body, text length, whitespace)
     - Create `packages/backend/src/validation/input-validator.ts`
     - Validate text: 1-5000 chars, non-empty, non-whitespace-only
     - Validate request body size: reject > 10KB
@@ -175,7 +175,7 @@ This plan implements the PetOps AI platform as an early deployed vertical slice,
     - Use fast-check `arbitraryCustomerRequestText()` generator
     - Assert: accepts iff 1-5000 chars with ≥1 non-whitespace character
 
-  - [ ] 5.3 Implement business rule validation (date ranges, required fields per service type)
+  - [x] 5.3 Implement business rule validation (date ranges, required fields per service type)
     - Create `packages/backend/src/validation/business-rules.ts`
     - Date range rule: endDate must not be before startDate
     - Required fields per service type: boarding={petName, startDate, endDate}, grooming={petName, startDate}, daycare={petName, startDate}, sitting={petName, startDate, endDate}
@@ -195,8 +195,8 @@ This plan implements the PetOps AI platform as an early deployed vertical slice,
     - Generate arbitrary date pairs, arbitrary service requests with random field presence
     - Assert: date error iff endDate < startDate; missing fields exactly match expected set; determinism via double-execution; N violations → N reported errors
 
-- [ ] 6. Backend — Attention Detection and Explainability
-  - [ ] 6.1 Implement attention flag detection (medication gaps, vaccination timing, behavioral, allergy)
+- [x] 6. Backend — Attention Detection and Explainability
+  - [x] 6.1 Implement attention flag detection (medication gaps, vaccination timing, behavioral, allergy)
     - Create `packages/backend/src/detection/attention-detector.ts`
     - Medication gap detection: missing schedule, ambiguous frequency, incomplete dosage, ambiguous route, contradictory instructions, duplicates → HIGH severity
     - Vaccination timing: expiration date ≤ service end date → MEDIUM severity
@@ -207,7 +207,7 @@ This plan implements the PetOps AI platform as an early deployed vertical slice,
     - _Requirements: 4.1, 4.2, 4.3, 4.4, 4.5, 4.6, 4.7_
     - **Validation**: `npm run test -- --run packages/backend`
 
-  - [ ] 6.2 Implement explainability module (evidence-based explanations, source text references)
+  - [x] 6.2 Implement explainability module (evidence-based explanations, source text references)
     - Create `packages/backend/src/detection/explainability.ts`
     - Generate 1-3 sentence explanations per flag identifying triggering data and operational concern
     - Include `sourceText` from original customer request that triggered the flag
@@ -224,8 +224,8 @@ This plan implements the PetOps AI platform as an early deployed vertical slice,
     - Generate arbitrary ExtractionResult with random medication/vaccination/behavioral/allergy entries
     - Assert: correct severity assignment, empty when no conditions, explanation 1-3 sentences, non-empty sourceText
 
-- [ ] 7. Backend — Care Plan Assembly
-  - [ ] 7.1 Implement care plan assembly (sections, medication timeline, missing field placeholders)
+- [x] 7. Backend — Care Plan Assembly
+  - [x] 7.1 Implement care plan assembly (sections, medication timeline, missing field placeholders)
     - Create `packages/backend/src/assembly/care-plan-assembler.ts`
     - Assemble ProposedCarePlan with all 6 sections: petInformation, services, schedules, medications, attentionFlags, specialInstructions
     - Medication schedule: chronological ordering by administration time within each day
