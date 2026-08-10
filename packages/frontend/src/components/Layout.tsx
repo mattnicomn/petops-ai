@@ -12,7 +12,13 @@ export function Layout() {
             to="/app"
             className={location.pathname === '/app' ? 'active' : ''}
           >
-            Intake
+            AI Intake
+          </Link>
+          <Link
+            to="/app/guided"
+            className={location.pathname === '/app/guided' ? 'active' : ''}
+          >
+            Guided
           </Link>
           <Link
             to="/app/plans"

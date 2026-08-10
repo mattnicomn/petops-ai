@@ -13,38 +13,48 @@ export function DemoShowcase() {
     <main className="demo-showcase">
       <header className="demo-header">
         <h1>PetOps AI Demo</h1>
-        <p>Select a scenario to see PetOps AI in action, or enter your own request.</p>
+        <p>Two ways to create a care plan — one trusted operational pipeline.</p>
       </header>
 
-      <div className="scenario-grid">
-        {DEMO_SCENARIOS.map((scenario) => (
-          <button
-            key={scenario.id}
-            className="scenario-card"
-            onClick={() => handleScenario(scenario.text)}
-            aria-label={`Load ${scenario.name} scenario`}
-          >
-            <span className="scenario-icon">{scenario.icon}</span>
-            <h3>{scenario.name}</h3>
-            <p className="scenario-description">{scenario.description}</p>
-            <span className="scenario-tags">
-              {scenario.tags.map((tag) => (
-                <span key={tag} className="tag">{tag}</span>
-              ))}
-            </span>
+      {/* Two modes */}
+      <div className="demo-modes">
+        <div className="demo-mode-card">
+          <h2>🤖 AI Quick Intake</h2>
+          <p>Describe what the pet needs in natural language. Bedrock AI extracts structured information automatically.</p>
+          <div className="scenario-grid-small">
+            {DEMO_SCENARIOS.map((scenario) => (
+              <button
+                key={scenario.id}
+                className="scenario-card-small"
+                onClick={() => handleScenario(scenario.text)}
+                aria-label={`Load ${scenario.name} scenario`}
+              >
+                <span>{scenario.icon} {scenario.name}</span>
+                <span className="scenario-tags">
+                  {scenario.tags.map((tag) => (
+                    <span key={tag} className="tag">{tag}</span>
+                  ))}
+                </span>
+              </button>
+            ))}
+          </div>
+          <button className="btn btn-secondary" onClick={() => navigate('/app')}>
+            ✏️ Blank Intake
           </button>
-        ))}
+        </div>
 
-        <button
-          className="scenario-card scenario-blank"
-          onClick={() => navigate('/app')}
-          aria-label="Start with blank intake form"
-        >
-          <span className="scenario-icon">✏️</span>
-          <h3>Blank Intake</h3>
-          <p className="scenario-description">Enter your own customer request</p>
-        </button>
+        <div className="demo-mode-card demo-mode-guided">
+          <h2>📋 Guided Intake</h2>
+          <p>Answer a few smart questions while PetOps builds the care plan in real time. No typing required.</p>
+          <button className="btn btn-primary" onClick={() => navigate('/app/guided')}>
+            Start Guided Intake →
+          </button>
+        </div>
       </div>
+
+      <p className="demo-footer-note">
+        Both paths use the same validation, attention detection, and human-review pipeline.
+      </p>
     </main>
   );
 }

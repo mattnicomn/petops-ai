@@ -306,3 +306,23 @@ A field is classified as uncertain when any of these conditions apply:
 
 1. WHEN a Customer_Request contains information about multiple pets, THE Extraction_Engine SHALL produce a separate pet record within the Extraction_Result for each identified pet
 2. WHEN the Extraction_Result contains multiple pets, THE Care_Plan_Generator SHALL produce a distinct section per pet
+
+### Requirement 19: Guided Intake Mode
+
+**User Story:** As a front-desk staff member, I want a guided step-by-step intake option, so that I can quickly build a care plan by answering contextual questions rather than typing free-form text.
+
+**Priority:** SHOULD HAVE (competitive enhancement added after judge-ready workflow was established)
+
+**Architecture Constraint:** Guided Intake MUST converge into the same downstream pipeline as AI Quick Intake: structured intake → deterministic validation → operational attention flags → care-plan assembly → human review → approve/reject → DynamoDB.
+
+#### Acceptance Criteria
+
+1. THE PetOps_System SHALL provide two intake modes accessible from the demo/entry point: "AI Quick Intake" (existing Bedrock-powered) and "Guided Intake" (contextual questions)
+2. THE Guided Intake SHALL collect pet selection, service type, and service-specific contextual questions through a multi-step interface
+3. THE Guided Intake SHALL display a Live Care Plan panel that updates immediately as the user provides answers
+4. WHEN guided intake is complete, THE PetOps_System SHALL map the collected answers into the same ExtractionResult-compatible structured contract used by the AI pipeline
+5. THE mapped guided intake data SHALL pass through the same deterministic validation, attention detection, and care-plan assembly used by AI Quick Intake
+6. THE Guided Intake SHALL enter the same human-review experience (ReviewPanel) as AI Quick Intake for final approve/reject
+7. THE Guided Intake SHALL NOT imply AI processing where deterministic UI logic is actually used
+8. THE Guided Intake SHALL NOT imply real appointment availability, reservation confirmation, or staff scheduling
+9. THE Guided Intake SHALL use only fictional pet data already established in the project

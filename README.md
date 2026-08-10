@@ -16,13 +16,20 @@ PetOps AI transforms unstructured customer requests (phone calls, texts, emails,
 
 1. Visit https://petops-ai.usmissionhero.com/
 2. Click **"Try the Demo"**
-3. Select the **Bentley** scenario (boarding + medication + behavioral)
-4. Click **"Analyze Request"** (wait ~3 seconds for AI)
-5. Review the proposed care plan with attention flags
-6. Click **"Approve Care Plan"**
-7. Visit **History** to see the stored result
+3. **AI Quick Intake**: Select the **Bentley** scenario → "Analyze Request" → review AI extraction
+4. **Guided Intake**: Click "Start Guided Intake" → pick Cooper → Full Groom → answer questions → watch the Live Care Plan build
+5. Both paths → Review panel with attention flags → **Approve** → saved to history
 
 No account creation, setup, or credentials required.
+
+## Two Intake Modes, One Trust Pipeline
+
+| Mode | Input Method | AI Involvement | Pipeline |
+|------|-------------|----------------|----------|
+| AI Quick Intake | Natural language text | Bedrock Structured Outputs | extract → validate → flags → plan → review |
+| Guided Intake | Contextual questions + selections | None (deterministic mapper) | map → validate → flags → plan → review |
+
+Both converge into the same deterministic validation → attention detection → care plan assembly → human review → DynamoDB persistence. The competitive story: *"Natural language or guided questions — one trusted operational pipeline."*
 
 ## Architecture
 
@@ -112,7 +119,7 @@ cd packages/frontend && npx vite build
 
 ### Test
 ```bash
-# All automated tests (42 deterministic tests)
+# All automated tests (62 deterministic + property + mapper tests)
 npx vitest --run
 
 # TypeScript check
@@ -149,9 +156,10 @@ aws cloudfront create-invalidation --distribution-id E368MC43CWVODO --paths "/*"
 
 ## Testing
 
-- **42 deterministic unit tests** covering business rules, input validation, attention detection, and care plan assembly
+- **62 automated tests** covering business rules, input validation, attention detection, care plan assembly, property invariants, and guided intake mapping
 - Tests verify the operational safety boundary (no clinical claims, no medication interactions)
-- Tests verify exhaustive error collection, date validation, and uncertainty handling
+- Property-based tests (fast-check) verify broad invariants: determinism, no-throw guarantees, length bounds
+- Guided mapper tests verify correct conversion from structured questions to extraction contract
 - Live Bedrock tests are separated and not required for normal development
 
 ## Cost
