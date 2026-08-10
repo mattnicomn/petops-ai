@@ -56,11 +56,19 @@ body {
 
 /* Landing Page */
 .landing { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 2rem; text-align: center; }
-.landing-hero { max-width: 600px; }
+.landing-hero { max-width: 640px; }
 .landing h1 { font-size: 3rem; color: var(--color-primary); margin-bottom: 0.5rem; }
 .landing-tagline { font-size: 1.2rem; color: var(--color-muted); margin-bottom: 1rem; }
-.landing-description { color: var(--color-muted); margin-bottom: 2rem; line-height: 1.7; }
-.landing-actions { display: flex; gap: 1rem; justify-content: center; }
+.landing-description { color: var(--color-text); margin-bottom: 1.5rem; line-height: 1.7; font-size: 1.05rem; }
+.landing-actions { margin-bottom: 0.75rem; }
+.btn-lg { padding: 0.85rem 2rem; font-size: 1.1rem; }
+.landing-note { color: var(--color-muted); font-size: 0.8rem; }
+.landing-features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; max-width: 700px; margin-top: 2.5rem; }
+@media (max-width: 768px) { .landing-features { grid-template-columns: 1fr; } }
+.feature-card { text-align: center; padding: 1rem; }
+.feature-icon { font-size: 1.8rem; display: block; margin-bottom: 0.5rem; }
+.feature-card h3 { font-size: 0.95rem; margin-bottom: 0.3rem; }
+.feature-card p { font-size: 0.82rem; color: var(--color-muted); line-height: 1.5; }
 .landing-footer { margin-top: 3rem; color: var(--color-muted); font-size: 0.85rem; }
 .landing-footer a { color: var(--color-primary); }
 

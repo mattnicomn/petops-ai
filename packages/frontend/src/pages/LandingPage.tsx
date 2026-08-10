@@ -6,21 +6,39 @@ export function LandingPage() {
       <div className="landing-hero">
         <h1>PetOps AI</h1>
         <p className="landing-tagline">
-          AI-powered operations assistance for pet-care businesses.
+          AI-powered operations assistant for pet-care businesses.
         </p>
         <p className="landing-description">
-          Transform unstructured customer requests into structured, validated care plans
-          with intelligent extraction, operational attention flags, and human-in-the-loop review.
+          Customer requests arrive as unstructured text — phone notes, emails, free-form messages.
+          PetOps AI extracts structured care instructions, flags operational concerns, and puts
+          humans in control before anything becomes an operational plan.
         </p>
         <div className="landing-actions">
-          <Link to="/demo" className="btn btn-primary">
+          <Link to="/demo" className="btn btn-primary btn-lg">
             Try the Demo
           </Link>
-          <Link to="/app" className="btn btn-secondary">
-            Go to App
-          </Link>
         </div>
+        <p className="landing-note">No account required. Fictional demo data only.</p>
       </div>
+
+      <section className="landing-features">
+        <div className="feature-card">
+          <span className="feature-icon">🤖</span>
+          <h3>AI Extraction</h3>
+          <p>Amazon Bedrock identifies pets, services, medications, and behavioral concerns from natural language.</p>
+        </div>
+        <div className="feature-card">
+          <span className="feature-icon">⚠️</span>
+          <h3>Operational Flags</h3>
+          <p>Deterministic rules detect medication gaps, vaccination timing, and behavioral considerations.</p>
+        </div>
+        <div className="feature-card">
+          <span className="feature-icon">👤</span>
+          <h3>Human Review</h3>
+          <p>Staff always approve or reject before a care plan becomes operational. AI is never the final authority.</p>
+        </div>
+      </section>
+
       <footer className="landing-footer">
         <p>
           Built for the 2026 Ready, Spec, Ship Hackathon — powered by{' '}

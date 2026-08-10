@@ -53,7 +53,8 @@ export function DemoShowcase() {
       </div>
 
       <p className="demo-footer-note">
-        Both paths use the same validation, attention detection, and human-review pipeline.
+        <strong>Two Intake Modes. One Trusted Operational Pipeline.</strong><br />
+        Both paths → Zod validation → attention flags → care plan assembly → human review → DynamoDB.
       </p>
     </main>
   );
