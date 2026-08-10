@@ -10,7 +10,8 @@
     "resolveJsonModule": true,
     "jsx": "react-jsx",
     "outDir": "./dist",
-    "noEmit": true
+    "noEmit": true,
+    "allowImportingTsExtensions": true
   },
   "include": ["src"]
 }
