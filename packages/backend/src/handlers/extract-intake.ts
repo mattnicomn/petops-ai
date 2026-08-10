@@ -206,13 +206,12 @@ async function invokeConverse(text: string, correlationId: string): Promise<unkn
 
   const response = await client.send(command);
 
-  // Log structural metadata (not content)
   console.log(JSON.stringify({
     correlationId,
-    event: 'bedrock_response_meta',
+    event: 'bedrock_response',
     stopReason: response.stopReason,
-    usage: response.usage,
-    contentBlockCount: response.output?.message?.content?.length,
+    inputTokens: response.usage?.inputTokens,
+    outputTokens: response.usage?.outputTokens,
   }));
 
   const content = response.output?.message?.content;
@@ -228,18 +227,13 @@ async function invokeConverse(text: string, correlationId: string): Promise<unkn
 
   const rawText = textBlock.text.trim();
 
-  // PRIMARY PATH: With Structured Outputs enabled, response is clean JSON.
-  // FALLBACK: If Structured Outputs is silently bypassed (e.g., first-time schema compilation),
-  // the model may wrap JSON in markdown fences. Handle defensively.
+  // PRIMARY PATH: Structured Outputs returns clean JSON directly.
+  // DEFENSIVE FALLBACK: If normalization needed (should not occur with bundled SDK).
   const jsonText = rawText.startsWith('{') ? rawText : stripMarkdownFences(rawText);
 
-  console.log(JSON.stringify({
-    correlationId,
-    event: 'response_text_start',
-    firstChar: rawText[0],
-    usedStructuredOutput: rawText.startsWith('{'),
-    length: rawText.length,
-  }));
+  if (!rawText.startsWith('{')) {
+    console.warn(JSON.stringify({ correlationId, event: 'unexpected_normalization_required', firstChar: rawText[0] }));
+  }
 
   const parsed = JSON.parse(jsonText);
   return parsed;

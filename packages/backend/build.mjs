@@ -14,7 +14,7 @@ for (const handler of handlers) {
     target: 'node20',
     format: 'esm',
     outfile: `${outdir}/${handler}/index.mjs`,
-    external: ['@aws-sdk/*'],
+    external: [], // Bundle AWS SDK to ensure outputConfig.textFormat support (Lambda runtime SDK may be outdated)
     sourcemap: true,
     minify: true,
     banner: {
