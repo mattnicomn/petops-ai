@@ -19,7 +19,19 @@ export function GuidedIntake() {
   }, [state.service]);
 
   const handleAnswer = (questionId: string, value: string) => {
-    setState(prev => ({ ...prev, answers: { ...prev.answers, [questionId]: value } }));
+    setState(prev => {
+      const newAnswers = { ...prev.answers, [questionId]: value };
+      // Clear custom text if switching away from "other"
+      if (value !== 'other') delete newAnswers[`${questionId}-custom`];
+      return { ...prev, answers: newAnswers };
+    });
+  };
+
+  const handleCustomText = (questionId: string, text: string) => {
+    // Bound to 100 characters
+    if (text.length <= 100) {
+      setState(prev => ({ ...prev, answers: { ...prev.answers, [`${questionId}-custom`]: text } }));
+    }
   };
 
   const handleContinueToReview = async () => {
@@ -131,6 +143,17 @@ export function GuidedIntake() {
                       </button>
                     ))}
                   </div>
+                  {state.answers[q.id] === 'other' && (
+                    <input
+                      type="text"
+                      className="custom-text-input"
+                      placeholder="Please describe (100 chars max)"
+                      value={state.answers[`${q.id}-custom`] || ''}
+                      onChange={(e) => handleCustomText(q.id, e.target.value)}
+                      maxLength={100}
+                      aria-label={`Custom answer for: ${q.label}`}
+                    />
+                  )}
                 </div>
               ))}
             </section>

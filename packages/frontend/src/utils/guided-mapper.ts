@@ -58,10 +58,10 @@ export function mapGuidedIntakeToExtraction(state: GuidedIntakeState): MappedExt
     : [];
 
   // Medications
-  const medications = mapMedications(answers.medications);
+  const medications = mapMedications(answers.medications, answers['medications-custom']);
 
   // Allergies
-  const allergies = mapAllergies(answers.allergies, answers['skin-sensitivity']);
+  const allergies = mapAllergies(answers.allergies, answers['skin-sensitivity'], answers['allergies-custom']);
 
   // Behavioral concerns
   const behavioralConcerns = mapBehavior(answers['dog-behavior'], answers['nail-behavior']);
@@ -129,23 +129,24 @@ function getTimingUncertainties(answers: Record<string, string>): string[] {
   return uncertain;
 }
 
-function mapMedications(medAnswer: string | undefined): MappedExtraction['medications'] {
+function mapMedications(medAnswer: string | undefined, customMed?: string): MappedExtraction['medications'] {
   if (!medAnswer || medAnswer === 'none') return [];
   if (medAnswer === 'apoquel-morning') {
     return [{ name: 'Apoquel', dosage: null, frequency: 'every morning', route: null, instructions: null, uncertainFields: ['dosage'] }];
   }
   if (medAnswer === 'other') {
-    return [{ name: 'Unknown medication', dosage: null, frequency: null, route: null, instructions: null, uncertainFields: ['name', 'dosage', 'frequency'] }];
+    const name = customMed || 'Unknown medication';
+    return [{ name, dosage: null, frequency: null, route: null, instructions: null, uncertainFields: ['dosage', 'frequency'] }];
   }
   return [];
 }
 
-function mapAllergies(allergyAnswer: string | undefined, skinAnswer: string | undefined): string[] {
+function mapAllergies(allergyAnswer: string | undefined, skinAnswer: string | undefined, customAllergy?: string): string[] {
   const allergies: string[] = [];
   if (allergyAnswer && allergyAnswer !== 'none') {
     if (allergyAnswer === 'chicken') allergies.push('chicken / poultry');
     else if (allergyAnswer === 'grain') allergies.push('grain');
-    else if (allergyAnswer === 'other') allergies.push('unspecified allergy');
+    else if (allergyAnswer === 'other') allergies.push(customAllergy || 'unspecified allergy');
   }
   if (skinAnswer === 'yes') allergies.push('sensitive skin');
   return allergies;

@@ -1,7 +1,7 @@
 # PetOps AI — Project Status
 
 ## Current Phase
-**Engineering Quality / Verification COMPLETE** — 51 automated tests passing, SECURITY.md complete, CI workflow added, documentation mature.
+**FEATURE COMPLETE / FEATURE FROZEN** — All product capabilities implemented, tested, deployed, and validated. Only defect fixes, documentation corrections, and presentation polish are permitted from this point forward.
 
 ## Completed
 - [x] Planning baseline (requirements, design, tasks, ADRs, steering)
@@ -44,9 +44,12 @@
 - Budget: $10/month with 50%/80%/100% alerts
 - Bedrock: Claude Haiku 4.5 via US inference profile with Structured Outputs
 
+- [x] Guided Intake mode with Live Care Plan (product feedback enhancement)
+- [x] Two intake modes sharing same trust pipeline
+- [x] Feature freeze achieved
+
 ## Remaining Work
-- [ ] Demo video preparation
-- [ ] Fresh-clone validation screenshot/record
+- [ ] Demo video
 - [ ] Final submission checklist
 
 ## Key Dates

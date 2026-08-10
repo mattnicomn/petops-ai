@@ -27,8 +27,9 @@
 | R16 | Care Plan History | SHOULD | `HistoryList.tsx`, `CarePlanDetail.tsx` | Live API `/api/care-plans` returns data, detail page tested | **Verified** |
 | R17 | Observability | SHOULD | CloudWatch 14-day retention, correlation IDs | Deployed log groups confirmed, correlation IDs in all responses | **Implemented** |
 | R18 | Multi-Pet Extraction | COULD | — | — | **Deferred** |
+| R19 | Guided Intake Mode | SHOULD | `GuidedIntake.tsx`, `guided-mapper.ts`, `guided-intake.ts` | `guided-mapper.test.ts` (11 tests) + live Cooper validation | **Verified** |
 
 ## Summary
-- **Verified**: 16 requirements
+- **Verified**: 17 requirements
 - **Implemented**: 1 requirement (R17 — observability deployed but no automated log-content tests)
 - **Deferred**: 1 requirement (R18 — multi-pet)

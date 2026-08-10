@@ -217,3 +217,7 @@ body {
 .live-flag { background: #fffbeb; padding: 0.5rem; border-radius: var(--radius-sm); border-color: #fcd34d; }
 .live-flag-low { background: #eff6ff; padding: 0.5rem; border-radius: var(--radius-sm); }
 .live-concern { font-size: 0.85rem; color: #92400e; }
+
+/* Custom text input for "Other" options */
+.custom-text-input { width: 100%; margin-top: 0.5rem; padding: 0.5rem 0.75rem; border: 1px solid var(--color-border); border-radius: var(--radius); font-size: 0.85rem; }
+.custom-text-input:focus { outline: none; border-color: var(--color-primary); box-shadow: 0 0 0 2px rgba(37,99,235,0.1); }
