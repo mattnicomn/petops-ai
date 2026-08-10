@@ -55,25 +55,21 @@ resource "aws_cloudfront_distribution" "frontend" {
     compress               = true
   }
 
-  # API behavior: proxy /api/* to API Gateway
+  # API behavior: proxy /api/* to API Gateway (no caching, forward Origin for CORS)
   ordered_cache_behavior {
     path_pattern     = "/api/*"
     allowed_methods  = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
     cached_methods   = ["GET", "HEAD"]
     target_origin_id = "api-gateway"
 
-    forwarded_values {
-      query_string = true
-      headers      = ["Authorization", "X-Correlation-Id", "Content-Type"]
-      cookies {
-        forward = "none"
-      }
-    }
+    # Disable caching for API responses — dynamic content must not be served stale
+    cache_policy_id          = "4135ea2d-6df8-44a3-9df3-4b5a84be39ad" # CachingDisabled
+    # AllViewerExceptHostHeader: forwards all viewer headers (including Origin,
+    # Access-Control-Request-Method, etc.) EXCEPT Host — which must remain as the
+    # API Gateway origin hostname for routing to work correctly.
+    origin_request_policy_id = "b689b0a8-53d0-40ab-baf2-68738e2966ac" # AllViewerExceptHostHeader
 
     viewer_protocol_policy = "redirect-to-https"
-    min_ttl                = 0
-    default_ttl            = 0
-    max_ttl                = 0
     compress               = true
   }
 
