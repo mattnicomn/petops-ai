@@ -18,9 +18,10 @@ out/
 *.tfstate
 *.tfstate.*
 .terraform/
-.terraform.lock.hcl
 *.tfvars
 !*.tfvars.example
+tfplan
+*.tfplan
 
 # IDE
 .vscode/
