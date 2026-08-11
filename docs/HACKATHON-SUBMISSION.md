@@ -70,6 +70,14 @@ Kiro was used for the complete lifecycle: steering → requirements → design �
 ## Feature Freeze
 Commit: `c4b6167` — all product capabilities frozen. Only presentation polish after this point.
 
+## Submission Status
+- **Status**: SUBMITTED
+- **Submission date**: 2026-08-10
+- **Participant**: Matthew Nico — Solo entrant
+- **Organization**: USMissionHero
+- **Final submitted commit**: `3aeeb74`
+- **Feature freeze remains in effect** — no subsequent changes without explicit reopening/approval
+
 ## Team
 Matthew Nico — Solo entrant
 Organization: USMissionHero
