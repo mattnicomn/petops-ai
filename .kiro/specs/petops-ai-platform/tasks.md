@@ -129,7 +129,7 @@ This plan implements the PetOps AI platform as an early deployed vertical slice,
   - [x] 23.5 Landing page and demo page judge-facing polish
 
 - [x] 24. Final Submission
-  - [x] 24.1 Record demo video (≤3 minutes) ✓
+  - [x] 24.1 Record demo video ✓
   - [x] 24.2 Upload video to YouTube ✓
   - [x] 24.3 Complete hackathon submission form ✓
   - [x] 24.4 Submission closeout documentation ✓
