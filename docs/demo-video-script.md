@@ -1,5 +1,7 @@
 # PetOps AI — Demo Video Script
 
+> **Historical:** This is the script used to record the hackathon demo videos (still available on YouTube). The hosted application at `https://petops-ai.usmissionhero.com/` was retired after the competition and is no longer live.
+
 **Target duration**: 2:45–2:50 (under 3:00 with buffer)
 
 ---

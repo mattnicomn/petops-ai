@@ -2,7 +2,11 @@
 
 AI-powered operations assistant for pet-care businesses.
 
-**Live Demo**: https://petops-ai.usmissionhero.com/
+## Project Status: Archived
+
+PetOps AI was built and submitted for the 2026 Ready, Spec, Ship Hackathon sponsored by Kiro. The AWS demo environment was retired after completion of the competition. The source code, specifications, architecture, and demo videos remain available for reference.
+
+**Live Demo**: _Retired after the competition — no longer hosted._ (was `https://petops-ai.usmissionhero.com/`)
 
 **🎬 Hackathon Demo Video**: [Watch the judging demo](https://www.youtube.com/watch?v=C4zRCx_ZyMw)
 **📹 Extended Technical Walkthrough**: [Watch the extended demo](https://www.youtube.com/watch?v=rcYxXv5sq98)
@@ -15,9 +19,11 @@ PetOps AI transforms unstructured customer requests (phone calls, texts, emails,
 
 **The solution**: AI extracts structured information, deterministic rules validate and flag operational concerns, and staff review/approve before anything becomes operational.
 
-## Quick Judge Walkthrough
+## Quick Judge Walkthrough (historical)
 
-1. Visit https://petops-ai.usmissionhero.com/
+> The hosted demo has been retired. This walkthrough documents how the live application behaved during the hackathon. To run it now, build and serve the frontend locally (see [Local Development](#local-development)).
+
+1. Visit the app (was `https://petops-ai.usmissionhero.com/`)
 2. Click **"Try the Demo"**
 3. **AI Quick Intake**: Select the **Bentley** scenario → "Analyze Request" → review AI extraction
 4. **Guided Intake**: Click "Start Guided Intake" → pick Cooper → Full Groom → answer questions → watch the Live Care Plan build
@@ -136,7 +142,9 @@ cd packages/frontend
 npx vite  # serves on localhost:5173 with /api proxy
 ```
 
-## AWS Deployment
+## AWS Deployment (historical / redeployment reference)
+
+> The AWS environment was torn down after the hackathon. The steps below are retained as a historical record of how PetOps AI was deployed and as a reference for anyone who wishes to redeploy from source. The referenced S3 bucket and CloudFront distribution no longer exist.
 
 ### Account Guard
 Terraform is configured with `allowed_account_ids = ["253881689673"]` and an explicit caller-identity precondition. Deployment fails if the active AWS identity does not belong to the approved account.

@@ -1,5 +1,7 @@
 # PetOps AI — Hackathon Submission
 
+> **Post-hackathon archival note (2026-09-11):** The submission was successfully completed. The AWS demo environment was retired on the teardown date (2026-09-11) to stop recurring cost. This repository is retained as an archive; all source, specifications, and architecture remain available. The YouTube demo videos remain available. The live application links below are preserved as a record of what was originally submitted and are labeled retired — they are no longer hosted.
+
 ## Event
 2026 Ready, Spec, Ship Hackathon (sponsored by Kiro)
 
@@ -7,8 +9,10 @@
 **PetOps AI** — AI-powered operations assistant for pet-care businesses
 
 ## Links
-- **Live Application**: https://petops-ai.usmissionhero.com/
-- **Demo Page**: https://petops-ai.usmissionhero.com/demo
+_As originally submitted. The live application URLs were retired after the competition and are no longer hosted; they are kept here as the historical submission record._
+
+- **Live Application**: https://petops-ai.usmissionhero.com/ _(retired after competition — no longer hosted)_
+- **Demo Page**: https://petops-ai.usmissionhero.com/demo _(retired after competition — no longer hosted)_
 - **GitHub Repository**: https://github.com/mattnicomn/petops-ai
 - **Demo Video**: https://www.youtube.com/watch?v=C4zRCx_ZyMw
 - **Extended Technical Walkthrough**: https://www.youtube.com/watch?v=rcYxXv5sq98
